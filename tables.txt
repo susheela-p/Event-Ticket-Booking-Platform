@@ -1,0 +1,67 @@
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email TEXT UNIQUE,
+    password TEXT,
+    role TEXT
+);
+
+select * from users;
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    role TEXT CHECK (role IN ('USER', 'ADMIN')) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+SELECT * FROM users WHERE email = 'admin@gmail.com';
+
+
+CREATE TABLE events (
+  id SERIAL PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT,
+  venue TEXT,
+  city TEXT,
+  event_date TIMESTAMP,
+  admin_id INTEGER REFERENCES users(id)
+);
+
+CREATE TABLE seats (
+  id SERIAL PRIMARY KEY,
+  event_id INTEGER REFERENCES events(id),
+  seat_number VARCHAR(10),
+  price INTEGER,
+  is_booked BOOLEAN DEFAULT FALSE,
+  UNIQUE(event_id, seat_number)
+);
+
+
+CREATE TABLE bookings (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  event_id INTEGER REFERENCES events(id),
+  total_amount INTEGER,
+  booked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE booking_seats (
+  booking_id INTEGER REFERENCES bookings(id),
+  seat_id INTEGER REFERENCES seats(id),
+  PRIMARY KEY (booking_id, seat_id)
+);
+
+
+SELECT title, city FROM events;
+
+SELECT seat_number, is_booked FROM seats WHERE event_id = 1;
+
+SELECT * FROM bookings;
+
+SELECT * FROM booking_seats;
+
+SELECT email, role FROM users;
+
+SELECT title, city FROM events;
