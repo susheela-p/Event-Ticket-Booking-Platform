@@ -1,0 +1,44 @@
+from pydantic import BaseModel
+from datetime import datetime
+from typing import List
+
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email TEXT UNIQUE,
+    password TEXT,
+    role TEXT
+);
+
+
+CREATE TABLE events (
+    id SERIAL PRIMARY KEY,
+    title TEXT,
+    venue TEXT,
+    city TEXT,
+    event_date TIMESTAMP,
+    admin_id INT REFERENCES users(id)
+);
+
+CREATE TABLE seats (
+    id SERIAL PRIMARY KEY,
+    event_id INT REFERENCES events(id),
+    seat_number TEXT,
+    price INT,
+    is_booked BOOLEAN DEFAULT FALSE,
+    UNIQUE(event_id, seat_number)
+);
+
+CREATE TABLE bookings (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    event_id INT REFERENCES events(id),
+    total_amount INT,
+    booked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE booking_seats (
+    id SERIAL PRIMARY KEY,
+    booking_id INT REFERENCES bookings(id),
+    seat_id INT REFERENCES seats(id)
+);
