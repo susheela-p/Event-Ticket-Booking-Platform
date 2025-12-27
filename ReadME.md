@@ -196,15 +196,6 @@ Real-world backend practices
 
 It reflects a strong understanding of backend development concepts using FastAPI and NeonDB.
 
-If you want, I can:
-
-Shorten this for executive summary
-
-Add ER diagram explanation
-
-Convert it into PDF format
-
-Review it as a team leader would
 
 
 # Testing & Verification
